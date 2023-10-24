@@ -1,6 +1,7 @@
 package Assignment07;
 
 import java.util.ArrayList;
+import Assignment07.GraphUtility;
 import java.util.List;
 
 public class Graph<Type> {
@@ -21,5 +22,17 @@ public class Graph<Type> {
         edges.add(edge);
     }
 
-   
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Edge<Type> edge : edges) {
+            stringBuilder.append(edge.getSRC().getData()).append(" -> ")
+                         .append(edge.getDST().getData()).append("\n");
+        }
+        return stringBuilder.toString();
+    }
+
+    public boolean isConnected(Vertex<Type> src, Vertex<Type> dst){
+        return areConnected(sourceNodes, destinationNodes, src, dst);
+    }
 }
