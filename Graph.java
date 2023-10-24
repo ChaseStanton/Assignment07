@@ -1,9 +1,12 @@
 package Assignment07;
 
 import java.util.ArrayList;
+<<<<<<< HEAD
 import java.util.LinkedList;
 
 import Assignment07.GraphUtility;
+=======
+>>>>>>> ce5a491051352290b588966121357e0754056b4d
 import java.util.List;
 import java.util.Queue;
 
@@ -29,12 +32,12 @@ public class Graph<Type> {
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
         for (Edge<Type> edge : edges) {
-            stringBuilder.append(edge.getSRC().getData()).append(" -> ")
-                         .append(edge.getDST().getData()).append("\n");
+            stringBuilder.append(edge.getSRC().getData()).append(" -> ").append(edge.getDST().getData()).append("\n");
         }
         return stringBuilder.toString();
     }
 
+<<<<<<< HEAD
     public boolean isConnected(Vertex<Type> src, Vertex<Type> dst){
         return GraphUtility.areConnected(sourceNodes, destinationNodes, src, dst);
     }
@@ -66,5 +69,17 @@ public class Graph<Type> {
         }
 
         return result;
+=======
+    public boolean isConnected(Vertex<Type> src, Vertex<Type> dst) {
+        return GraphUtility.areConnected(sourceNodes, destinationNodes, src, dst);
+    }
+
+    public List<Vertex<Type>> shortestPath(Vertex<Type> src, Vertex<Type> dst) {
+        return GraphUtility.shortestPath(sourceNodes, destinationNodes, src, dst);
+    }
+
+    public List<Vertex<Type>> TopologicalSort(Vertex<Type> src, Vertex<Type> dst) {
+        return GraphUtility.sort(sourceNodes, destinationNodes);
+>>>>>>> ce5a491051352290b588966121357e0754056b4d
     }
 }
