@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class Graph<Type> {
 private Map<Type, Vertex<Type>> vertices;
-private List<Edge<Type>> edges;
+private Map<Type, List<Type>> graph;
 
 public Graph() {
 	this.vertices = new HashMap<>();
@@ -29,17 +29,6 @@ public void addEdge(Type sourceData, Type destinationData) {
 }
 
 public List<Type> topologicalSort(){
-	List<Type> sources = new ArrayList<>();
-    List<Type> destinations = new ArrayList<>();
-
-    for (Vertex<Type> vertex : vertices.values()) {
-        Type sourceData = vertex.getData();
-        for (Edge<Type> edge : vertex.getEdges()) {
-            Type destinationData = edge.getDestination().getData();
-            sources.add(sourceData);
-            destinations.add(destinationData);
-        }}
-
-    return GraphUtility.sort(sources, destinations);
+	return GraphUtility.sort(new ArrayList<>(graph.keySet()), new ArrayList<>());
 }
 }
