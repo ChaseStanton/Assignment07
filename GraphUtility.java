@@ -53,7 +53,7 @@ public class GraphUtility {
                 }
             }
         }
-            throw new IllegalArgumentException("No connection between source and desination.");
+        throw new IllegalArgumentException("No connection between source and desination.");
     }
 
     public static <Type> List<Type> shortestPath(List<Type> sources, List<Type> destinations, Type srcData,
@@ -106,14 +106,14 @@ public class GraphUtility {
     }
 
     public static <Type> List<Type> sort(List<Type> sources, List<Type> destinations) throws IllegalArgumentException {
-    	List<Type> vertices = new ArrayList<>();
+        List<Type> vertices = new ArrayList<>();
         List<List<Type>> graph = new ArrayList<>();
         List<Integer> inDegrees = new ArrayList<>();
-    	
-    	for (int i = 0; i < sources.size(); i++) {
+
+        for (int i = 0; i < sources.size(); i++) {
             Type source = sources.get(i);
             Type destination = destinations.get(i);
-            
+
             // Ensure vertices are unique
             if (!vertices.contains(source)) {
                 vertices.add(source);
@@ -125,13 +125,13 @@ public class GraphUtility {
                 inDegrees.add(0);
                 graph.add(new ArrayList<>());
             }
-            
+
             int sourceIndex = vertices.indexOf(source);
             int destinationIndex = vertices.indexOf(destination);
             inDegrees.set(destinationIndex, inDegrees.get(destinationIndex) + 1);
             graph.get(sourceIndex).add(destination);
         }
-    	Queue<Type> queue = new LinkedList<>();
+        Queue<Type> queue = new LinkedList<>();
         List<Type> result = new ArrayList<>();
 
         // Enqueue vertices with in-degree 0
@@ -159,7 +159,7 @@ public class GraphUtility {
         if (result.size() != vertices.size()) {
             throw new IllegalArgumentException("The graph contains a cycle.");
         }
-        
+
         return result;
     }
 
