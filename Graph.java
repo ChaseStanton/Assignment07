@@ -1,8 +1,11 @@
 package Assignment07;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+
 import Assignment07.GraphUtility;
 import java.util.List;
+import java.util.Queue;
 
 public class Graph<Type> {
     private List<Vertex<Type>> sourceNodes;
@@ -33,6 +36,35 @@ public class Graph<Type> {
     }
 
     public boolean isConnected(Vertex<Type> src, Vertex<Type> dst){
-        return areConnected(sourceNodes, destinationNodes, src, dst);
+        return GraphUtility.areConnected(sourceNodes, destinationNodes, src, dst);
+    }
+    public static <Type> List<Type> topologicalSort(List<Type> verticesList, List<List<Type>> graph, List<Integer> inDegrees) {
+        Queue<Type> queue = new LinkedList<>();
+        List<Type> result = new ArrayList<>();
+
+        // Enqueue vertices with in-degree 0
+        for (int i = 0; i < inDegrees.size(); i++) {
+            if (inDegrees.get(i) == 0) {
+                queue.offer(verticesList.get(i));
+            }
+        }
+
+        // While the queue isn't empty, dequeue the queue.
+        while (!queue.isEmpty()) {
+            Type vertex = queue.poll();
+            result.add(vertex);
+
+            // Update in-degrees of adjacent vertices
+            int vertexIndex = verticesList.indexOf(vertex);
+            for (Type next : graph.get(vertexIndex)) {
+                int nextIndex = verticesList.indexOf(next);
+                inDegrees.set(nextIndex, inDegrees.get(nextIndex) - 1);
+                if (inDegrees.get(nextIndex) == 0) {
+                    queue.offer(next);
+                }
+            }
+        }
+
+        return result;
     }
 }
