@@ -1,12 +1,9 @@
 package Assignment07;
 
 import java.util.ArrayList;
-<<<<<<< HEAD
 import java.util.LinkedList;
-
 import Assignment07.GraphUtility;
-=======
->>>>>>> ce5a491051352290b588966121357e0754056b4d
+
 import java.util.List;
 import java.util.Queue;
 
@@ -37,10 +34,6 @@ public class Graph<Type> {
         return stringBuilder.toString();
     }
 
-<<<<<<< HEAD
-    public boolean isConnected(Vertex<Type> src, Vertex<Type> dst){
-        return GraphUtility.areConnected(sourceNodes, destinationNodes, src, dst);
-    }
     public static <Type> List<Type> topologicalSort(List<Type> verticesList, List<List<Type>> graph, List<Integer> inDegrees) {
         Queue<Type> queue = new LinkedList<>();
         List<Type> result = new ArrayList<>();
@@ -69,7 +62,7 @@ public class Graph<Type> {
         }
 
         return result;
-=======
+    }
     public boolean isConnected(Vertex<Type> src, Vertex<Type> dst) {
         return GraphUtility.areConnected(sourceNodes, destinationNodes, src, dst);
     }
@@ -78,8 +71,5 @@ public class Graph<Type> {
         return GraphUtility.shortestPath(sourceNodes, destinationNodes, src, dst);
     }
 
-    public List<Vertex<Type>> TopologicalSort(Vertex<Type> src, Vertex<Type> dst) {
-        return GraphUtility.sort(sourceNodes, destinationNodes);
->>>>>>> ce5a491051352290b588966121357e0754056b4d
-    }
+   
 }

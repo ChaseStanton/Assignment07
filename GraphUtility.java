@@ -123,7 +123,6 @@ public class GraphUtility {
             Type source = sources.get(i);
             Type destination = destinations.get(i);
 
-            // Ensure vertices are unique
             if (!vertices.contains(source)) {
                 vertices.add(source);
                 inDegrees.add(0);
