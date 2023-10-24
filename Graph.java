@@ -1,9 +1,13 @@
 package Assignment07;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
+import java.util.Stack;
 
 public class Graph<Type> {
     private List<Vertex<Type>> sourceNodes;
@@ -23,19 +27,91 @@ public class Graph<Type> {
         edges.add(edge);
     }
 
-    @Override
-    public String toString() {
-        StringBuilder stringBuilder = new StringBuilder();
-        for (Edge<Type> edge : edges) {
-            stringBuilder.append(edge.getSRC().getData()).append(" -> ").append(edge.getDST().getData()).append("\n");
+    public boolean areConnected(List<Type> sources, List<Type> destinations, Type srcData, Type dstData)
+            throws IllegalArgumentException {
+        if (sources.size() != destinations.size()) {
+            throw new IllegalArgumentException("The sizes of the sources and destinations lists must be the same.");
         }
-        return stringBuilder.toString();
+
+        Map<Type, List<Type>> adj = new HashMap<>();
+        for (int i = 0; i < sources.size(); i++) {
+            adj.computeIfAbsent(sources.get(i), k -> new ArrayList<>()).add(destinations.get(i));
+        }
+        List<Type> visited = new ArrayList<>();
+        Stack<Type> queue = new Stack<>();
+
+        queue.push(srcData);
+        while (!queue.isEmpty()) {
+            Type vertex = queue.pop();
+            visited.add(vertex);
+
+            if (vertex.equals(dstData)) {
+                return true;
+            }
+
+            List<Type> neighbors = adj.get(vertex);
+            if (neighbors != null) {
+                for (Type neighbor : neighbors) {
+                    if (!visited.contains(neighbor)) {
+                        queue.push(neighbor);
+                    }
+                }
+            }
+        }
+        throw new IllegalArgumentException("No connection between source and desination.");
     }
 
-    public boolean isConnected(Vertex<Type> src, Vertex<Type> dst){
-        return GraphUtility.areConnected(sourceNodes, destinationNodes, src, dst);
+    public List<Type> shortestPath(List<Type> sources, List<Type> destinations, Type srcData, Type dstData)
+            throws IllegalArgumentException {
+        if (!areConnected(sources, destinations, srcData, dstData)) {
+            throw new IllegalArgumentException("There is no connection between the two nodes");
+        }
+        if (sources.size() != destinations.size()) {
+            throw new IllegalArgumentException("The sizes of the sources and destinations lists must be the same.");
+        }
+        if (!sources.contains(srcData) || !destinations.contains(dstData)) {
+            throw new IllegalArgumentException("Source node or destination node not in graph");
+        }
+
+        Map<Type, List<Type>> graph = new HashMap<>();
+
+        for (int i = 0; i < sources.size(); i++) {
+            graph.computeIfAbsent(sources.get(i), k -> new ArrayList<>()).add(destinations.get(i));
+        }
+
+        Queue<Type> queue = new LinkedList<>();
+        Map<Type, Type> parents = new HashMap<>();
+        List<Type> shortestPath = new ArrayList<>();
+
+        queue.add(srcData);
+        parents.put(srcData, null);
+
+        while (!queue.isEmpty()) {
+            Type vertex = queue.poll();
+            if (vertex.equals(dstData)) {
+                if (vertex != null) {
+                    shortestPath.add(vertex);
+                    vertex = parents.get(vertex);
+                }
+                Collections.reverse(shortestPath);
+                return shortestPath;
+            }
+            List<Type> neighbors = graph.get(vertex);
+            if (neighbors != null) {
+                for (Type neighbor : neighbors) {
+                    if (!parents.containsKey(neighbor)) {
+                        queue.add(neighbor);
+                        parents.put(neighbor, vertex);
+                    }
+                }
+            }
+        }
+
+        throw new IllegalArgumentException("No path found from source to destination.");
     }
-    public static <Type> List<Type> topologicalSort(List<Type> verticesList, List<List<Type>> graph, List<Integer> inDegrees) {
+
+    public static <Type> List<Type> topologicalSort(List<Type> verticesList, List<List<Type>> graph,
+            List<Integer> inDegrees) {
         Queue<Type> queue = new LinkedList<>();
         List<Type> result = new ArrayList<>();
 
@@ -63,5 +139,14 @@ public class Graph<Type> {
         }
 
         return result;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Edge<Type> edge : edges) {
+            stringBuilder.append(edge.getSRC().getData()).append(" -> ").append(edge.getDST().getData()).append("\n");
+        }
+        return stringBuilder.toString();
     }
 }
