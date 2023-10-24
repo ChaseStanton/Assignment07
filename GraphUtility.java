@@ -109,8 +109,18 @@ public class GraphUtility {
         List<Type> vertices = new ArrayList<>();
         List<List<Type>> graph = new ArrayList<>();
         List<Integer> inDegrees = new ArrayList<>();
+        
+        makeGraph(sources, destinations, vertices, graph, inDegrees);
+        
+        List<Type> result = Graph.topologicalSort(vertices, graph, inDegrees);
+        if(result.size() != vertices.size())
+        	throw new IllegalArgumentException("The graph cannot contain a cycle");
+        return result;
 
-        for (int i = 0; i < sources.size(); i++) {
+       
+    }
+    private static <Type> void makeGraph(List<Type> sources, List<Type> destinations, List<Type> vertices, List<List<Type>> graph, List<Integer> inDegrees) {
+    	for (int i = 0; i < sources.size(); i++) {
             Type source = sources.get(i);
             Type destination = destinations.get(i);
 
@@ -131,36 +141,6 @@ public class GraphUtility {
             inDegrees.set(destinationIndex, inDegrees.get(destinationIndex) + 1);
             graph.get(sourceIndex).add(destination);
         }
-        Queue<Type> queue = new LinkedList<>();
-        List<Type> result = new ArrayList<>();
-
-        // Enqueue vertices with in-degree 0
-        for (int i = 0; i < inDegrees.size(); i++) {
-            if (inDegrees.get(i) == 0) {
-                queue.offer(vertices.get(i));
-            }
-        }
-
-        // While the queue isn't empty, dequeue the queue.
-        while (!queue.isEmpty()) {
-            Type vertex = queue.poll();
-            result.add(vertex);
-
-            // Update in-degrees of adjacent vertices
-            int vertexIndex = vertices.indexOf(vertex);
-            for (Type next : graph.get(vertexIndex)) {
-                int nextIndex = vertices.indexOf(next);
-                inDegrees.set(nextIndex, inDegrees.get(nextIndex) - 1);
-                if (inDegrees.get(nextIndex) == 0) {
-                    queue.offer(next);
-                }
-            }
-        }
-        if (result.size() != vertices.size()) {
-            throw new IllegalArgumentException("The graph contains a cycle.");
-        }
-
-        return result;
     }
 
     /**
