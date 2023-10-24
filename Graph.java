@@ -1,7 +1,6 @@
 package Assignment07;
 
 import java.util.ArrayList;
-import Assignment07.GraphUtility;
 import java.util.List;
 
 public class Graph<Type> {
@@ -33,6 +32,14 @@ public class Graph<Type> {
     }
 
     public boolean isConnected(Vertex<Type> src, Vertex<Type> dst){
-        return areConnected(sourceNodes, destinationNodes, src, dst);
+        return GraphUtility.areConnected(sourceNodes, destinationNodes, src, dst);
+    }
+
+    public List<Vertex<Type>> shortestPath(Vertex<Type> src, Vertex<Type> dst){
+        return GraphUtility.shortestPath(sourceNodes, destinationNodes, src, dst);
+    }
+
+    public List<Vertex<Type>> TopologicalSort(Vertex<Type> src, Vertex<Type> dst){
+        return GraphUtility.sort(sourceNodes, destinationNodes);
     }
 }
