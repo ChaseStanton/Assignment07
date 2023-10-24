@@ -52,9 +52,8 @@ public class GraphUtility {
                     }
                 }
             }
-            throw new IllegalArgumentException("No connection between source and desination.");
         }
-        return false;
+            throw new IllegalArgumentException("No connection between source and desination.");
     }
 
     public static <Type> List<Type> shortestPath(List<Type> sources, List<Type> destinations, Type srcData,
