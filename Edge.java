@@ -2,14 +2,12 @@ package Assignment07;
 
 
 public class Edge<Type> {
-	private Vertex<Type> source;
-	private Vertex<Type> destination;
+	private Vertex<Type> dst;
 	
-	public Edge(Vertex<Type> source, Vertex<Type> destination) {
-		this.source = source;
-		this.destination = destination;
+	public Edge(Vertex<Type> dst) {
+		this.dst = dst;
 	}
-	public Vertex<Type> getDestination(){
-		return this.destination;
+	public Vertex<Type> getOtherVertex(){
+		return this.dst;
 	}
 	}

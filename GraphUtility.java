@@ -107,42 +107,60 @@ public class GraphUtility {
     }
 
     public static <Type> List<Type> sort(List<Type> sources, List<Type> destinations) throws IllegalArgumentException {
-    	Map<Type, Integer> inDegree = new HashMap<>();
-    	Map<Type, List<Type>> graph = new HashMap<>();
-    	//Populate the graph and inDegree
-    	for(Type source: sources) {
-    		inDegree.put(source, 0);
-    		graph.put(source, new ArrayList<>());
-    	}
-    	// Add destinations to the graph and update the inDegrees
-    	for(int i = 0; i < sources.size(); i++) {
-    		Type source = sources.get(i);
-    		Type destination = destinations.get(i);
-    		List<Type> graphSource = graph.get(source);
-    		Integer inDegreeDestination = inDegree.get(destination);
-    		graphSource.add(destination);
-    		inDegree.put(destination, inDegreeDestination + 1);
-    	}
+    	List<Type> vertices = new ArrayList<>();
+        List<List<Type>> graph = new ArrayList<>();
+        List<Integer> inDegrees = new ArrayList<>();
+    	
+    	for (int i = 0; i < sources.size(); i++) {
+            Type source = sources.get(i);
+            Type destination = destinations.get(i);
+            
+            // Ensure vertices are unique
+            if (!vertices.contains(source)) {
+                vertices.add(source);
+                inDegrees.add(0);
+                graph.add(new ArrayList<>());
+            }
+            if (!vertices.contains(destination)) {
+                vertices.add(destination);
+                inDegrees.add(0);
+                graph.add(new ArrayList<>());
+            }
+            
+            int sourceIndex = vertices.indexOf(source);
+            int destinationIndex = vertices.indexOf(destination);
+            inDegrees.set(destinationIndex, inDegrees.get(destinationIndex) + 1);
+            graph.get(sourceIndex).add(destination);
+        }
     	Queue<Type> queue = new LinkedList<>();
-    	List<Type> result = new ArrayList<>();
-    	// If the vertice of the inDegree is 0, enqueue the vertice
-    	for(Type vertice: inDegree.keySet()) {
-    		if(inDegree.get(vertice) == 0)
-    			queue.offer(vertice);
-    	}
-    	// While the queue isn't empty, dequeue the queue.
-    	while(!queue.isEmpty()) {
-    		Type vertice = queue.poll();
-    		result.add(vertice);
-    		for(Type next: graph.get(vertice)) {
-    			inDegree.put(vertice, inDegree.get(next) - 1);
-    			if(inDegree.get(next) == 0)
-    				queue.offer(vertice);
-    		}
-    	}
-    	if (result.size() != inDegree.size()) {
+        List<Type> result = new ArrayList<>();
+
+        // Enqueue vertices with in-degree 0
+        for (int i = 0; i < inDegrees.size(); i++) {
+            if (inDegrees.get(i) == 0) {
+                queue.offer(vertices.get(i));
+            }
+        }
+
+        // While the queue isn't empty, dequeue the queue.
+        while (!queue.isEmpty()) {
+            Type vertex = queue.poll();
+            result.add(vertex);
+
+            // Update in-degrees of adjacent vertices
+            int vertexIndex = vertices.indexOf(vertex);
+            for (Type next : graph.get(vertexIndex)) {
+                int nextIndex = vertices.indexOf(next);
+                inDegrees.set(nextIndex, inDegrees.get(nextIndex) - 1);
+                if (inDegrees.get(nextIndex) == 0) {
+                    queue.offer(next);
+                }
+            }
+        }
+        if (result.size() != vertices.size()) {
             throw new IllegalArgumentException("The graph contains a cycle.");
-    	}
+        }
+        
         return result;
     }
 

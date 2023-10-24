@@ -1,24 +1,26 @@
 package Assignment07;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Vertex<Type> {
-	private Type data;
-	private List<Edge<Type>> edges;
+	private Type vertice;
+	private LinkedList<Edge<Type>> adj;
 	
-	public Vertex(Type data) {
-		this.data = data;
-		this.edges = new ArrayList<>();
+	public Vertex(Type vertice) {
+		this.vertice = vertice;
+		this.adj = new LinkedList<Edge<Type>>();
 	}
-	public void addEdge(Edge<Type> edge) {
-		edges.add(edge);
+	public Type getVertice() {
+		return this.vertice;
 	}
-	
-	public Type getData() {
-		return this.data;
-	}
-	public List<Edge<Type>> getEdges(){
-		return edges;
-	}
+	public void addEdge(Vertex<Type> otherVertex) {
+        adj.add(new Edge<Type>(otherVertex));
+    }
+	  public Iterator<Edge<Type>> edges() {
+	        return adj.iterator();
+	    }
 }
+	
