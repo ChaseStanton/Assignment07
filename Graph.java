@@ -25,21 +25,20 @@ public class Graph<Type> {
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
         for (Edge<Type> edge : edges) {
-            stringBuilder.append(edge.getSRC().getData()).append(" -> ")
-                         .append(edge.getDST().getData()).append("\n");
+            stringBuilder.append(edge.getSRC().getData()).append(" -> ").append(edge.getDST().getData()).append("\n");
         }
         return stringBuilder.toString();
     }
 
-    public boolean isConnected(Vertex<Type> src, Vertex<Type> dst){
+    public boolean isConnected(Vertex<Type> src, Vertex<Type> dst) {
         return GraphUtility.areConnected(sourceNodes, destinationNodes, src, dst);
     }
 
-    public List<Vertex<Type>> shortestPath(Vertex<Type> src, Vertex<Type> dst){
+    public List<Vertex<Type>> shortestPath(Vertex<Type> src, Vertex<Type> dst) {
         return GraphUtility.shortestPath(sourceNodes, destinationNodes, src, dst);
     }
 
-    public List<Vertex<Type>> TopologicalSort(Vertex<Type> src, Vertex<Type> dst){
+    public List<Vertex<Type>> TopologicalSort(Vertex<Type> src, Vertex<Type> dst) {
         return GraphUtility.sort(sourceNodes, destinationNodes);
     }
 }
